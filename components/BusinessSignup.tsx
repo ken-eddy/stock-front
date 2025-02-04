@@ -1,6 +1,8 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -14,25 +16,11 @@ export function BusinessSignup() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const router = useRouter()
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    setIsUserLoggedIn(!!token)
-  }, [])
-
   const handleBusinessSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     setError("")
     setSuccess("")
-
-    const token = localStorage.getItem("token")
-    if (!token) {
-      setError("Session expired. Please log in again.")
-      setIsLoading(false)
-      router.push("/login")
-      return
-    }
-
     const formData = new FormData(e.currentTarget)
     const businessName = formData.get("businessName") as string
     const password = formData.get("password") as string
@@ -42,23 +30,21 @@ export function BusinessSignup() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ business_name: businessName, password }),
+        credentials: "include",
       })
 
       const data = await response.json()
 
       if (response.status === 401) {
         setError("Session expired. Please log in again.")
-        localStorage.removeItem("token")
         setTimeout(() => router.push("/login"), 2000)
       } else if (response.status === 404) {
         setError("User not found. Please log in first.")
       } else if (response.status === 409) {
         setError("A business with this name already exists.")
       } else if (response.ok) {
-        localStorage.setItem("businessToken", data.token)
         setSuccess("Success! Redirecting to dashboard...")
         setTimeout(() => router.push("/dashboard"), 2000)
       } else {

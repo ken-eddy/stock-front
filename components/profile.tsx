@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie"
 
 interface UserProfile {
   user_id: number;
@@ -20,20 +21,13 @@ export default function Profile() {
   // Fetch user profile on mount
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setError("Session expired. Please log in again.");
-        router.push("/login");
-        return;
-      }
-
       try {
         const response = await fetch("http://localhost:8080/api/users/profile", {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          credentials:"include",
         });
 
         const data = await response.json();
@@ -41,7 +35,6 @@ export default function Profile() {
           setUser(data);
         } else {
           setError(data.error || "Failed to load profile.");
-          localStorage.removeItem("token");
           router.push("/login");
         }
       } catch (err) {
@@ -52,11 +45,19 @@ export default function Profile() {
     fetchProfile();
   }, [router]);
 
-  // Logout function
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // Clear token
-    router.push("/login"); // Redirect to login
-  };
+ 
+  // Proper logout handling
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:8080/api/users/logout", {
+        method: "POST",
+        credentials: "include"
+      })
+      router.push("/login")
+    } catch (error) {
+      console.error("Logout failed:", error)
+    }
+  }
 
   if (error) {
     return <p className="text-red-500">{error}</p>;

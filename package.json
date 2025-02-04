@@ -44,6 +44,7 @@
     "date-fns": "latest",
     "embla-carousel-react": "8.5.1",
     "input-otp": "1.4.1",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.454.0",
     "motion": "^11.18.1",
     "next": "^14.2.23",
@@ -63,6 +64,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",

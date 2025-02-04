@@ -32,32 +32,19 @@ export default function CategoryProductsPage() {
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        console.log("Category ID:", id); // Debugging log
         const fetchData = async () => {
-            const token = localStorage.getItem("businessToken")
-            if (!token) {
-                router.push("/login")
-                return
-            }
-
             try {
                 setLoading(true)
                 setError(null)
 
                 const [categoryRes, productsRes] = await Promise.all([
                     fetch(`http://localhost:8080/api/categories/${id}`, {
-                        headers: { Authorization: `Bearer ${token}` }
+                        credentials:'include'
                     }),
                     fetch(`http://localhost:8080/api/categories/${id}/products`, {
-                        headers: { Authorization: `Bearer ${token}` }
+                        credentials:'include'
                     })
                 ])
-
-                // if (!categoryRes.ok || !productsRes.ok) {
-                //   throw new Error(categoryRes.status === 404 
-                //     ? "Category not found" 
-                //     : "Failed to fetch data")
-                // }
                 // Handle category response
                 if (!categoryRes.ok) {
                     const errorText = await categoryRes.text()
@@ -67,8 +54,6 @@ export default function CategoryProductsPage() {
 
                 // Handle products response
                 if (!productsRes.ok) {
-                    const errorText = await productsRes.text()
-                    console.error("Products Error:", errorText) // Debugging log
                     throw new Error("Failed to fetch products")
                 }
 

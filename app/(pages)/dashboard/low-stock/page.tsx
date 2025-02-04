@@ -22,13 +22,10 @@ export default function LowStockPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('businessToken')
     const lowStockItems = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/products/low-stock-items", {
-          headers : {
-            Authorization : `Bearer ${token}`
-          }
+         credentials : 'include'
         });
         if (!response.ok) {
           throw new Error("Could not fetch products");

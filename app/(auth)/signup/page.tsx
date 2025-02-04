@@ -21,7 +21,6 @@ export default function SignUp() {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  // const [confirmEmail, setConfirmEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [role, setRole] = useState<string>("admin"); // Default role is 'user'
@@ -72,9 +71,7 @@ export default function SignUp() {
     
     // Handle successful signup
     if (response.ok && data.token && data.user) {
-        localStorage.setItem("token", data.token);  // Store the token first
         setMessage({ text: "Signup successful! Redirecting...", success: true });
-        
         setTimeout(() => {
             router.push("/business");  // Redirect after storing the token
         }, 2000);
@@ -170,7 +167,6 @@ export default function SignUp() {
            >
              <option value="admin">Admin</option>
              <option value="user">User</option>
-             {/* <option value="moderator">Moderator</option> */}
            </select>
          </div>
          <button type="submit" disabled={loading} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" >          {loading ? "Signing Up..." : "Sign Up"}        </button>

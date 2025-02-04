@@ -27,17 +27,9 @@ export default function CategoriesPage() {
   }, [])
 
   const fetchCategories = async () => {
-    const token = localStorage.getItem("businessToken")
-    if (!token) {
-      toast.error("Unauthorized. Please log in.")
-      return
-    }
-
     try {
       const response = await fetch("http://localhost:8080/api/categories", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials : 'include'
       })
 
       if (!response.ok) {
@@ -54,22 +46,15 @@ export default function CategoriesPage() {
   const handleAddCategory = async (e: FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
-    const token = localStorage.getItem("businessToken")
-    if (!token) {
-      toast.error("Unauthorized. Please log in.")
-      setLoading(false)
-      return
-    }
-
     try {
       const response = await fetch("http://localhost:8080/api/categories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ name }),
+        credentials : 'include'
       })
 
       const data = await response.json()

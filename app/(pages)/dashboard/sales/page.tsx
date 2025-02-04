@@ -54,20 +54,14 @@ export default function SalesPage() {
   // Fetch all products
   useEffect(() => {
 
-    const token = localStorage.getItem("businessToken")
-    if (!token) {
-      router.push('/login')
-      return
-    }
-
     const fetchProducts = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/products/" , {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          credentials : 'include'
         });
         if (!response.ok) {
           throw new Error("Could not fetch products");
@@ -84,18 +78,14 @@ export default function SalesPage() {
 
   // Fetch all sales
   useEffect(() => {
-    const token = localStorage.getItem("businessToken")
-    if (!token) {
-      router.push('/login')
-    }
     const fetchSales = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/sales" , {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          credentials:'include'
         });
         if (!response.ok) {
           throw new Error("Could not fetch sales");
@@ -112,21 +102,15 @@ export default function SalesPage() {
 
   // Fetch last 5 sales
   useEffect(() => {
-    const token = localStorage.getItem("businessToken")
-    if (!token) {
-      router.push('/login')
-      return
-    }
-
     const fetchLastFiveSales = async () => {
       try {
         const response = await fetch(
           "http://localhost:8080/api/sales/last-five-sales" , {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${token}`,
               "Content-Type": "application/json",
             },
+            credentials:'include'
           }
         );
         if (!response.ok) {
@@ -146,7 +130,6 @@ export default function SalesPage() {
 
   // Add new sale
   const handleAddSale = async () => {
-    const token = localStorage.getItem('businessToken')
 
     if (selectedDate && selectedProduct && quantity) {
       try {
@@ -154,12 +137,12 @@ export default function SalesPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${token}`,
           },
           body: JSON.stringify({
             product_id: parseInt(selectedProduct),
             quantity: parseInt(quantity),
           }),
+          credentials:'include'
         });
 
         if (!response.ok) {

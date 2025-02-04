@@ -27,16 +27,9 @@ export default function EditProductPage() {
     if (!id) return
 
     const fetchProduct = async () => {
-      const token = localStorage.getItem("token")
-      if (!token) {
-        router.push("/login")
-        return
-      }
       try {
         const response = await fetch(`http://localhost:8080/api/products/${id}`,{
-          headers : {
-            Authorization : `Bearer ${token}`
-          }
+         credentials:'include'
         })
         if (!response.ok) throw new Error('Failed to fetch product')
         const data = await response.json()
@@ -58,19 +51,14 @@ export default function EditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const updatedProduct = { name, quantity, price }
-    const token = localStorage.getItem("token")
-    if (!token) {
-      router.push("/login")
-      return
-    }
 
     try {
       const response = await fetch(`http://localhost:8080/api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization' : `Bearer ${token}`
         },
+        credentials : 'include', 
         body: JSON.stringify(updatedProduct),
       })
 

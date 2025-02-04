@@ -42,15 +42,14 @@ export default function ProfilePage() {
     }
   }, [user.role])
 
-  const token = localStorage.getItem("businessToken")
 
   const fetchBusinessUsers = () => {
     fetch("http://localhost:8080/api/users/business", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      credentials : 'include'
     })
       .then((res) => res.json())
       .then((data) => setBusinessUsers(data))
@@ -58,18 +57,13 @@ export default function ProfilePage() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("businessToken")
-    if (!token) {
-      router.push("/login")
-      return
-    }
 
     fetch("http://localhost:8080/api/users/profile", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      credentials : 'include'
     })
       .then((response) => response.json())
       .then((data) => {
@@ -87,15 +81,11 @@ export default function ProfilePage() {
     e.preventDefault()
     setMessage(null)
 
-    const token = localStorage.getItem("businessToken")
 
     try {
       const response = await fetch("http://localhost:8080/api/users/createEmployee", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json",
-        },
+        credentials: 'include',
         body: JSON.stringify(employeeFormData),
       })
 
@@ -113,10 +103,18 @@ export default function ProfilePage() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("token")
-    localStorage.removeItem("businessToken")
-    router.push("/login")
+ 
+  // Proper logout handling
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:8080/api/users/logout", {
+        method: "POST",
+        credentials: "include"
+      })
+      router.push("/login")
+    } catch (error) {
+      console.error("Logout failed:", error)
+    }
   }
 
   // Handler for changing the user's password (for all users)
@@ -124,7 +122,6 @@ export default function ProfilePage() {
     e.preventDefault()
     setMessage("")
 
-    const token = localStorage.getItem("businessToken")
 
     const formData = new FormData(e.currentTarget)
     const oldPassword = formData.get("oldPassword") as string
@@ -134,9 +131,9 @@ export default function ProfilePage() {
       const response = await fetch("http://localhost:8080/api/users/changePassword", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials:'include',
         body: JSON.stringify({ old_password: oldPassword, new_password: newPassword }),
       })
 
@@ -156,8 +153,6 @@ export default function ProfilePage() {
     e.preventDefault()
     setBusinessMessage("")
 
-    const token = localStorage.getItem("businessToken")
-
     const formData = new FormData(e.currentTarget)
     const oldBusinessPassword = formData.get("oldBusinessPassword") as string
     const newBusinessPassword = formData.get("newBusinessPassword") as string
@@ -166,9 +161,9 @@ export default function ProfilePage() {
       const response = await fetch("http://localhost:8080/api/business/changePassword", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials:'include',
         body: JSON.stringify({
           old_business_password: oldBusinessPassword,
           new_business_password: newBusinessPassword,

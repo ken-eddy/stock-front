@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import Loading from "@/components/ui/loading"
 
+
 export function BusinessLogin() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
@@ -18,15 +19,6 @@ export function BusinessLogin() {
     setIsLoading(true)
     setError("")
     setSuccess("")
-
-    const userToken = localStorage.getItem("token")
-    if (!userToken) {
-      setError("User session expired. Please log in again.")
-      setIsLoading(false)
-      router.push("/login")
-      return
-    }
-
     const formData = new FormData(e.currentTarget)
     const businessName = formData.get("businessName") as string
     const password = formData.get("password") as string
@@ -36,22 +28,19 @@ export function BusinessLogin() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
         },
         body: JSON.stringify({
           business_name: businessName,
           password,
         }),
+        credentials: "include",
       })
 
       const data = await response.json()
 
       if (response.status === 401) {
         setError("Session expired. Please log in again.")
-        localStorage.removeItem("token")
-        router.push("/login")
       } else if (response.ok) {
-        localStorage.setItem("businessToken", data.token)
         setSuccess("Success! Redirecting to dashboard...")
         setTimeout(() => router.push("/dashboard"), 2000)
       } else {

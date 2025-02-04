@@ -24,7 +24,6 @@ export default function ReportsPage() {
 
   const handleGenerateReport = async () => {
 
-    const token = localStorage.getItem("businessToken")
     // Validate inputs
     if (!reportType) {
       alert("Please select a report type.");
@@ -42,9 +41,9 @@ export default function ReportsPage() {
       const response = await fetch("http://localhost:8080/api/reports", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify({
           reportType,
           startDate: dateRange.from.toISOString(),
