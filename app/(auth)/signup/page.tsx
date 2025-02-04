@@ -54,6 +54,7 @@ export default function SignUp() {
     try {
       const response = await fetch("http://localhost:8080/api/auth/signup", {
         method: "POST",
+        credentials:'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password, role }),
       });
@@ -70,7 +71,7 @@ export default function SignUp() {
     }
     
     // Handle successful signup
-    if (response.ok && data.token && data.user) {
+    if (response.ok && data.user) {
         setMessage({ text: "Signup successful! Redirecting...", success: true });
         setTimeout(() => {
             router.push("/business");  // Redirect after storing the token
