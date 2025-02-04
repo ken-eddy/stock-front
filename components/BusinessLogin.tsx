@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import Loading from "@/components/ui/loading"
+import { API_BASE_URL } from "@/utils/config"
 
 
 export function BusinessLogin() {
@@ -24,7 +25,7 @@ export function BusinessLogin() {
     const password = formData.get("password") as string
 
     try {
-      const response = await fetch("http://localhost:8080/api/business/login", {
+      const response = await fetch(`${API_BASE_URL}api/business/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { API_BASE_URL } from '@/utils/config'
 
 interface Product {
   ID: number;
@@ -28,7 +29,7 @@ export default function EditProductPage() {
 
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/products/${id}`,{
+        const response = await fetch(`${API_BASE_URL}api/products/${id}`,{
          credentials:'include'
         })
         if (!response.ok) throw new Error('Failed to fetch product')
@@ -53,7 +54,7 @@ export default function EditProductPage() {
     const updatedProduct = { name, quantity, price }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+      const response = await fetch(`${API_BASE_URL}api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

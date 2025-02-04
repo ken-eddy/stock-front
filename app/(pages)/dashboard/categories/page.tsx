@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { API_BASE_URL } from "@/utils/config"
 
 interface Category {
   ID: number
@@ -28,7 +29,7 @@ export default function CategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/categories", {
+      const response = await fetch(`${API_BASE_URL}api/categories`, {
         credentials : 'include'
       })
 
@@ -47,7 +48,7 @@ export default function CategoriesPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      const response = await fetch("http://localhost:8080/api/categories", {
+      const response = await fetch(`${API_BASE_URL}api/categories`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

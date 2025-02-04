@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Edit, Trash2 } from 'lucide-react'
 import Link from 'next/link';
 import router, { useRouter } from 'next/router'
+import { API_BASE_URL } from '@/utils/config'
 
 
 // Define the Product interface
@@ -31,7 +32,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/products/', {
+        const response = await fetch(`${API_BASE_URL}api/products/`, {
           credentials: 'include'
         });
 
@@ -65,7 +66,7 @@ export default function ProductsPage() {
   //deleting a product
   const deleteProduct = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+      const response = await fetch(`${API_BASE_URL}api/products/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -79,7 +80,7 @@ export default function ProductsPage() {
   // Proper logout handling
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8080/api/users/logout", {
+      await fetch(`${API_BASE_URL}api/users/logout`, {
         method: "POST",
         credentials: "include"
       })

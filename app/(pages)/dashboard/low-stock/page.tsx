@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Edit,Trash2 } from 'lucide-react'
 import Link from "next/link";
 import { Button } from '@/components/ui/button'
+import { API_BASE_URL } from "@/utils/config";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
@@ -24,7 +25,7 @@ export default function LowStockPage() {
   useEffect(() => {
     const lowStockItems = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/products/low-stock-items", {
+        const response = await fetch(`${API_BASE_URL}api/products/low-stock-items`, {
          credentials : 'include'
         });
         if (!response.ok) {

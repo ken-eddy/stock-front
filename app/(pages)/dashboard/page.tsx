@@ -9,7 +9,7 @@ import Loading from "@/components/ui/loading";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
-import Cookies from "js-cookie";
+import { API_BASE_URL } from "@/utils/config";
 
 export default function Dashboard() {
   const [totalProducts, setTotalProducts] = useState(null);
@@ -22,14 +22,7 @@ export default function Dashboard() {
 
   // Fetch user profile
   useEffect(() => {
-    // const token = localStorage.getItem("businessToken");
-    // const token = Cookies.get("businessToken")
-    // if (!token) {
-    //   router.push("/login");
-    //   return;
-    // }
-
-    fetch("http://localhost:8080/api/users/profile", {
+    fetch(`${API_BASE_URL}api/users/profile`, {
       method: "GET",
       headers: {
         // "Authorization": `Bearer ${token}`,
@@ -51,13 +44,7 @@ export default function Dashboard() {
 
   // Fetch Dashboard Data
   useEffect(() => {
-    // const token = localStorage.getItem("businessToken");
-    // const token = Cookies.get("businessToken")
-    // if (!token) {
-    //   router.push("/login");
-    //   return;
-    // }
-    fetch("http://localhost:8080/api/products/total", {
+    fetch(`${API_BASE_URL}api/products/total`, {
       method: "GET",
       headers: {
         // "Authorization": `Bearer ${token}`,
@@ -69,7 +56,7 @@ export default function Dashboard() {
       .then((data) => setTotalProducts(data.total))
       .catch((error) => console.error("Error fetching total products:", error));
 
-    fetch("http://localhost:8080/api/products/low-stock" , {
+    fetch(`${API_BASE_URL}api/products/low-stock` , {
       method: "GET",
       headers: {
         // "Authorization": `Bearer ${token}`,
@@ -81,7 +68,7 @@ export default function Dashboard() {
       .then((data) => setLowStockItems(data.lowstock))
       .catch((error) => console.error("Error fetching low stock items:", error));
 
-    fetch("http://localhost:8080/api/products/total-value" , {
+    fetch(`${API_BASE_URL}api/products/total-value` , {
       method: "GET",
       headers: {
         // "Authorization": `Bearer ${token}`,
@@ -100,8 +87,17 @@ export default function Dashboard() {
   //   router.push("/login");
   // };
   const handleLogout = async () => {
-    await fetch("http://localhost:8080/api/users/logout")
+    try {
+      await fetch(`${API_BASE_URL}api/users/logout`, {
+        method: "POST",
+        credentials: "include"
+      })
+      router.push("/login")
+    } catch (error) {
+      console.error("Logout failed:", error)
+    }
   }
+
 
   return (
     <AuthGuard>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DatePicker } from "@/components/date-picker";
+import { API_BASE_URL } from "@/utils/config";
 import {
   Select,
   SelectContent,
@@ -56,7 +57,7 @@ export default function SalesPage() {
 
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/products/" , {
+        const response = await fetch(`${API_BASE_URL}api/products/` , {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -80,7 +81,7 @@ export default function SalesPage() {
   useEffect(() => {
     const fetchSales = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/sales" , {
+        const response = await fetch(`${API_BASE_URL}api/sales` , {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -105,7 +106,7 @@ export default function SalesPage() {
     const fetchLastFiveSales = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/sales/last-five-sales" , {
+          `${API_BASE_URL}api/sales/last-five-sales` , {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -133,7 +134,7 @@ export default function SalesPage() {
 
     if (selectedDate && selectedProduct && quantity) {
       try {
-        const response = await fetch("http://localhost:8080/api/sales", {
+        const response = await fetch(`${API_BASE_URL}api/sales`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

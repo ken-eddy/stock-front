@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/utils/config";
 
 interface UserProfile {
   user_id: number;
@@ -21,7 +22,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/users/profile", {
+        const response = await fetch(`${API_BASE_URL}api/users/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +49,7 @@ export default function Profile() {
   // Proper logout handling
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8080/api/users/logout", {
+      await fetch(`${API_BASE_URL}api/users/logout`, {
         method: "POST",
         credentials: "include"
       })

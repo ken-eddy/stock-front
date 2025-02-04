@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { API_BASE_URL } from "@/utils/config"
 
 interface Product {
     ID: number
@@ -38,10 +39,10 @@ export default function CategoryProductsPage() {
                 setError(null)
 
                 const [categoryRes, productsRes] = await Promise.all([
-                    fetch(`http://localhost:8080/api/categories/${id}`, {
+                    fetch(`${API_BASE_URL}api/categories/${id}`, {
                         credentials:'include'
                     }),
-                    fetch(`http://localhost:8080/api/categories/${id}/products`, {
+                    fetch(`${API_BASE_URL}api/categories/${id}/products`, {
                         credentials:'include'
                     })
                 ])

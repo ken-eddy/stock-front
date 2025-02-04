@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { API_BASE_URL } from "@/utils/config";
 import {
   Select,
   SelectContent,
@@ -38,7 +39,7 @@ export default function ReportsPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/reports", {
+      const response = await fetch(`${API_BASE_URL}api/reports`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { LogOut, Mail, Briefcase, User } from "lucide-react"
 import AuthGuard from "@/utils/auth"
+import { API_BASE_URL } from "@/utils/config"
 
 export default function ProfilePage() {
   const [user, setUser] = useState({
@@ -44,7 +45,7 @@ export default function ProfilePage() {
 
 
   const fetchBusinessUsers = () => {
-    fetch("http://localhost:8080/api/users/business", {
+    fetch(`${API_BASE_URL}api/users/business`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
 
-    fetch("http://localhost:8080/api/users/profile", {
+    fetch(`${API_BASE_URL}api/users/profile`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +84,7 @@ export default function ProfilePage() {
 
 
     try {
-      const response = await fetch("http://localhost:8080/api/users/createEmployee", {
+      const response = await fetch(`${API_BASE_URL}api/users/createEmployee`, {
         method: "POST",
         credentials: 'include',
         body: JSON.stringify(employeeFormData),
@@ -107,7 +108,7 @@ export default function ProfilePage() {
   // Proper logout handling
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8080/api/users/logout", {
+      await fetch(`${API_BASE_URL}api/users/logout`, {
         method: "POST",
         credentials: "include"
       })
@@ -128,7 +129,7 @@ export default function ProfilePage() {
     const newPassword = formData.get("newPassword") as string
 
     try {
-      const response = await fetch("http://localhost:8080/api/users/changePassword", {
+      const response = await fetch(`${API_BASE_URL}/api/users/changePassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -158,7 +159,7 @@ export default function ProfilePage() {
     const newBusinessPassword = formData.get("newBusinessPassword") as string
 
     try {
-      const response = await fetch("http://localhost:8080/api/business/changePassword", {
+      const response = await fetch(`${API_BASE_URL}/api/business/changePassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

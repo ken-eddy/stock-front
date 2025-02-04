@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AuthGuard from "@/utils/auth";
+import { API_BASE_URL } from "@/utils/config";
 
 interface Category {
   ID: number;
@@ -39,7 +40,7 @@ export default function AddProductPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/categories", {
+        const response = await fetch(`${API_BASE_URL}api/categories`, {
           headers: { 
             "Content-Type": "application/json"
           },
@@ -80,7 +81,7 @@ export default function AddProductPage() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/products/", {
+      const response = await fetch(`${API_BASE_URL}api/products/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
